@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: user-service:latest
+          ports:
+            - containerPort: 3002
+          env:
+            - name: DB_HOST
+              value: db-service
+            - name: DB_PORT
+              value: "3004"
+            - name: DB_NAME
+              value: "fitness_tracking"
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASSWORD
+              value: "password"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-service
+  ports:
+    - protocol: TCP
+      port: 3002
+      targetPort: 3002
+  type: ClusterIP
