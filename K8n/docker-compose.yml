@@ -1,0 +1,43 @@
+version: "3"
+services:
+  db-service:
+    build:
+      context: ./db-service
+    ports:
+      - "3004:3004"
+    networks:
+      - fitness-network
+
+  user-service:
+    build:
+      context: ./user-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - db-service
+    networks:
+      - fitness-network
+
+  workout-service:
+    build:
+      context: ./workout-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db-service
+    networks:
+      - fitness-network
+
+  tracking-service:
+    build:
+      context: ./tracking-service
+    ports:
+      - "3003:3003"
+    depends_on:
+      - db-service
+    networks:
+      - fitness-network
+
+networks:
+  fitness-network:
+    driver: bridge
