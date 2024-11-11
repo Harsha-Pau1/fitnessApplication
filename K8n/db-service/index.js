@@ -1,8 +1,21 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
+const path = "/app"; // or "/data" depending on your volume mount path
+
+// Ensure the directory exists before opening the database
+if (!fs.existsSync(path)) {
+  fs.mkdirSync(path, { recursive: true });
+}
 
 const app = express();
-const db = new sqlite3.Database("/app/fitness.db");
+const db = new sqlite3.Database(`${path}/fitness.db`, (err) => {
+  if (err) {
+    console.error("Error opening database:", err.message);
+    return;
+  }
+  console.log("Connected to the SQLite database.");
+});
 
 app.use(express.json());
 

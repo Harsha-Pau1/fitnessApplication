@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: user-service:latest
+          image: harshapaul265/k8n-user-service:latest # Use the correct image name here
           ports:
             - containerPort: 3002
 ---

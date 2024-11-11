@@ -1,5 +1,6 @@
 FROM node:18-alpine
 WORKDIR /app
+RUN mkdir -p /app   # Create /app directory in the container
 COPY package*.json ./
 RUN npm install
 COPY . .

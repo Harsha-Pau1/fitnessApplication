@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: tracking-service
-          image: tracking-service:latest
+          image: harshapaul265/k8n-tracking-service:latest # Use the correct image name here
           ports:
             - containerPort: 3003
 ---

@@ -14,13 +14,15 @@ spec:
     spec:
       containers:
         - name: db-service
-          image: harshapaul265/db-service:latest
+          image: harshapaul265/k8n-db-service:latest
           ports:
             - containerPort: 3004
           volumeMounts:
             - mountPath: /app/fitness.db # Mount fitness.db here inside the container
               name: db-storage
-              subPath: fitness.db # This ensures only the database file is mounted here
+      volumes:
+        - name: db-storage
+          emptyDir: {} # Using emptyDir instead of PersistentVolume
 ---
 apiVersion: v1
 kind: Service
@@ -34,26 +36,3 @@ spec:
       port: 3004
       targetPort: 3004
   type: ClusterIP
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: db-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /data/db # Path on the host machine where data will be stored
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: db-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi

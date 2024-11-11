@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: workout-service
-          image: workout-service:latest
+          image: harshapaul265/k8n-workout-service:latest # Use the correct image name here
           ports:
             - containerPort: 3001
 ---
