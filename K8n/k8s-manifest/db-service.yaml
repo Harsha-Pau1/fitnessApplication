@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-service
+  template:
+    metadata:
+      labels:
+        app: db-service
+    spec:
+      containers:
+        - name: db-service
+          image: harshapaul265/k8n-db-service:latest
+          ports:
+            - containerPort: 3004
+          volumeMounts:
+            - mountPath: /app/fitness.db # Mount fitness.db here inside the container
+              name: db-storage
+      volumes:
+        - name: db-storage
+          emptyDir: {} # Using emptyDir instead of PersistentVolume
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    app: db-service
+  ports:
+    - protocol: TCP
+      port: 3004
+      targetPort: 3004
+  type: ClusterIP
